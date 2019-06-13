@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo -e "decomposing case"
+decomposePar >&1 | tee log.decomposePar
+
+echo -e "Running Parallel"
+mpirun -np 3 overPimpleDyMFoam -parallel >&1 | tee log.run

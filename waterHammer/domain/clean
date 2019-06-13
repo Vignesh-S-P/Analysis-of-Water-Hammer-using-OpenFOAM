@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo -e "Cleaning Case"
+foamCleanTutorials
+rm -r 0

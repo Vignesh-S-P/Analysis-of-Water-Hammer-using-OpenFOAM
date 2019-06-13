@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo -e "Meshing from File"
+
+ideasUnvToFoam vane.unv >&1 | tee log.mesh
+
+echo -e "Changing patch type"
+
+changeDictionary >&1 | tee log.changeDictionary
+
+transformPoints -translate "(0 0.1 0)"

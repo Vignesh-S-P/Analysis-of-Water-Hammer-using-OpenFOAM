@@ -1,0 +1,102 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1806                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+size    0.002;
+xMin    0;
+xMax    1;
+yMin    0;
+yMax    0.05;
+zMin    0;
+zMax    0.1;
+xCells  #calc "std::floor( ( $xMax - $xMin ) / $size )";
+yCells  #calc "std::floor( ( $yMax - $yMin ) / $size )";
+zCells  1;//#calc "std::floor( ( $zMax - $zMin ) / $size )";
+
+
+scale   1;
+
+vertices
+(
+    ($xMin $yMin $zMin)
+    ($xMax $yMin $zMin)
+    ($xMax $yMax $zMin)
+    ($xMin $yMax $zMin)
+
+    ($xMin $yMin $zMax)
+    ($xMax $yMin $zMax)
+    ($xMax $yMax $zMax)
+    ($xMin $yMax $zMax)
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) domainZone ( $xCells $yCells $zCells ) simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+    oversetPatch
+    {
+	type overset;
+	faces ();
+    }
+    walls
+    {
+        type wall;
+        faces
+        (   
+            (7 6 2 3)
+	    (0 1 5 4)
+        );
+    }
+    frontAndBack
+    {
+	type empty;
+	faces
+	( 
+	    (0 3 2 1)
+	    (4 5 6 7)
+	    
+	);
+    }
+    inlet
+    {
+	type patch;
+	faces
+	(
+	    (0 4 7 3)
+	);
+    }
+    outlet
+    {
+	type patch;
+	faces
+	(
+	    (1 2 6 5)
+	);
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //

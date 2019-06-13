@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo -e "Meshing from File"
+blockMesh >&1 | tee log.blockMesh
+
+echo -e "Changing patch type"
+changeDictionary >&1 | tee log.changeDictionary
+
+echo -e "Merging meshes"
+mergeMeshes . ../vane -overwrite >&1 | tee log.mergeMeshes
+
+echo -e "setting zone ids"
+cp -r 0.orig/ 0
+setFields >&1 | tee log.setFields
